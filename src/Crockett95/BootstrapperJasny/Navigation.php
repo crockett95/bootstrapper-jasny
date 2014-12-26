@@ -34,4 +34,33 @@ class Navigation extends Original
             $link['title'] .
         '</li>';
     }
+
+        /**
+     * Renders the dropdown
+     *
+     * @param array $link The link to render
+     * @return string
+     */
+    protected function renderDropdown(array $link)
+    {
+        if (self::NAVIGATION_NAVMENU !== $this->type) return parent::renderDropdown();
+
+        if ($this->dropdownShouldBeActive($link)) {
+            $string = '<li class=\'dropdown active\'>';
+        } else {
+            $string = '<li class=\'dropdown\'>';
+        }
+
+        $string .= "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>{$link[0]} <span class='caret'></span></a>";
+        $string .= '<ul class=\'dropdown-menu navmenu-nav\' role=\'menu\'>';
+
+        foreach ($link[1] as $item) {
+            $string .= $this->renderItem($item);
+        }
+
+        $string .= '</ul>';
+        $string .= '</li>';
+
+        return $string;
+    }
 }
