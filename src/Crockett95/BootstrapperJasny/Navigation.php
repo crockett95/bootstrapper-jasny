@@ -19,13 +19,19 @@ class Navigation extends Original
         return $this->links($links)->withAttributes($attributes);
     }
 
-    public function renderItem($link)
+    private function renderItem($link)
     {
         if (isset($link['title']) && !isset($link['link'])) {
             return $this->renderDropdownHeader($link);
+        } elseif (!is_array($link)) {
+            $string = $this->renderSeparator($link);
+        } elseif (isset($link['link'])) {
+            $string = $this->renderLink($link);
         } else {
-            return parent::renderItem($link);
+            $string = $this->renderDropdown($link);
         }
+
+        return $string;
     }
 
     public function renderDropdownHeader($link)
@@ -35,7 +41,7 @@ class Navigation extends Original
         '</li>';
     }
 
-        /**
+    /**
      * Renders the dropdown
      *
      * @param array $link The link to render
